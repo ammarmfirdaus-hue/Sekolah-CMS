@@ -18,9 +18,9 @@
 }
 
 html {
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     scroll-behavior: smooth;
-    scroll-padding-top: 82px;
+    scroll-padding-top: 76px;
 }
 
 body {
@@ -36,7 +36,7 @@ body {
     font-weight: 400;
     line-height: 1.7;
     margin: 0;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 a {
@@ -118,6 +118,29 @@ img {
 .public-navbar .nav-link:hover,
 .public-navbar .nav-link:focus {
     color: var(--color-primary);
+}
+
+.public-navbar .dropdown-menu {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    min-width: 200px;
+    padding: 0.5rem 0;
+}
+
+.public-navbar .dropdown-item {
+    color: var(--color-text);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.6rem 1.25rem;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+.public-navbar .dropdown-item:hover,
+.public-navbar .dropdown-item:focus {
+    background: var(--color-primary-soft);
+    color: var(--color-primary-dark);
 }
 
 .navbar-toggler {
@@ -216,8 +239,8 @@ img {
 
 .hero-overlay {
     background:
-        linear-gradient(135deg, rgba(16, 66, 25, 0.85) 0%, rgba(27, 94, 32, 0.65) 50%, rgba(46, 125, 50, 0.35) 100%),
-        radial-gradient(circle at center, rgba(14, 52, 20, 0.2) 0%, rgba(14, 52, 20, 0.5) 100%);
+        linear-gradient(135deg, rgba(16, 66, 25, 0.25) 0%, rgba(27, 94, 32, 0.20) 50%, rgba(46, 125, 50, 0.12) 100%),
+        radial-gradient(circle at center, rgba(14, 52, 20, 0.08) 0%, rgba(14, 52, 20, 0.15) 100%);
     inset: 0;
     position: absolute;
     z-index: 1;
@@ -234,7 +257,7 @@ img {
 }
 
 .hero-title {
-    font-size: clamp(2.3rem, 5.5vw, 4.5rem);
+    font-size: clamp(2.3rem, 5.5vw, 3rem);
     font-weight: 700;
     letter-spacing: -0.045em;
     line-height: 1.15;
@@ -244,7 +267,7 @@ img {
 
 .hero-subtitle {
     color: var(--color-accent);
-    font-size: clamp(1.08rem, 2.2vw, 1.45rem);
+    font-size: clamp(1.08rem, 2.2vw, 1.40rem);
     font-weight: 600;
     margin: 0 auto 1rem;
     max-width: 720px;
@@ -965,6 +988,14 @@ img {
     color: var(--color-primary-dark);
 }
 
+.school-logo-footer {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.footer-brand-text {
+    min-width: 0;
+}
+
 .footer-brand h2 {
     color: var(--color-surface);
     font-size: 1.1rem;
@@ -998,6 +1029,8 @@ img {
 .footer-links li,
 .footer-contact li {
     margin-bottom: 0.45rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .footer-links a {
@@ -1170,6 +1203,11 @@ img {
 }
 
 @media (max-width: 991.98px) {
+    .public-navbar {
+        backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.98);
+    }
+
     .public-navbar .navbar-collapse {
         background: var(--color-surface);
         border-top: 1px solid var(--color-border);
@@ -1179,6 +1217,17 @@ img {
 
     .public-navbar .nav-link {
         padding: 0.65rem 0 !important;
+    }
+
+    .public-navbar .dropdown-menu {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .public-navbar .dropdown-item {
+        padding: 0.65rem 0;
     }
 
     .nav-contact-button {
@@ -1212,7 +1261,7 @@ img {
 
 @media (max-width: 767.98px) {
     html {
-        scroll-padding-top: 72px;
+        scroll-padding-top: 70px;
     }
 
     .public-navbar {
@@ -1437,4 +1486,13 @@ img {
         padding-top: 3rem;
         padding-bottom: 4rem;
     }
+}
+
+.hero-foundation {
+    color: rgba(255,255,255,.9);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    margin-bottom: .5rem;
+    text-transform: none;
 }

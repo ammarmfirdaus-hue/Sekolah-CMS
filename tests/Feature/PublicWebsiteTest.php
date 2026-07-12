@@ -33,9 +33,9 @@ class PublicWebsiteTest extends TestCase
     {
         $this->get(route('home'))
             ->assertOk()
-            ->assertSee('PKBM Al Falah Sumur Batu')
+            ->assertSee('Sekolah')
             ->assertSee('Informasi program pendidikan belum tersedia.')
-            ->assertSee('Google Maps belum ditambahkan.');
+            ->assertSee('Data guru dan tenaga pendidik belum tersedia.');
     }
 
     public function test_active_teacher_detail_can_be_opened_by_slug(): void

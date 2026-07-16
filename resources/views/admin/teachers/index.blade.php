@@ -12,14 +12,15 @@
         <a class="admin-btn" href="{{ route('admin.teachers.create') }}">Tambah Guru</a>
     </div>
 
-    <section class="admin-card">
-        <form class="admin-search" method="GET" action="{{ route('admin.teachers.index') }}">
-            <input class="admin-input" name="search" value="{{ $search }}" placeholder="Cari nama, email, jabatan, atau email login">
-            <button class="admin-btn-soft" type="submit">Cari</button>
-            @if ($search !== '')
-                <a class="admin-btn-soft" href="{{ route('admin.teachers.index') }}">Reset</a>
-            @endif
-        </form>
+    <form class="admin-search" method="GET" action="{{ route('admin.teachers.index') }}">
+        <input class="admin-input" name="search" value="{{ $search }}" placeholder="Cari nama, email, jabatan, atau email login guru">
+        <button class="admin-btn-soft" type="submit">Cari</button>
+        @if ($search !== '')
+            <a class="admin-btn-soft" href="{{ route('admin.teachers.index') }}">Reset</a>
+        @endif
+    </form>
+
+    <div class="admin-table-card">
 
         <div class="admin-table-wrap">
             <table class="admin-table">
@@ -58,7 +59,7 @@
                                     <span class="admin-badge {{ $teacher->user->is_active ? '' : 'admin-badge-danger' }}">{{ $teacher->user->is_active ? 'Akun Aktif' : 'Akun Nonaktif' }}</span>
                                     <br><small>{{ $teacher->user->email }}</small>
                                 @else
-                                    <span class="admin-badge admin-badge-warning">Belum Memiliki Akun</span>
+                                    <span class="admin-badge-warning">Belum Memiliki Akun</span>
                                 @endif
                             </td>
                             <td>{{ $teacher->teacherAssignments->count() }} assignment</td>
@@ -71,15 +72,22 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">Data guru tidak ditemukan.</td>
+                            <td colspan="7">
+                                <div class="admin-empty">
+                                    <p>{{ $search ? "Tidak ada guru ditemukan untuk pencarian '".$search."'." : 'Belum ada data guru.' }}</p>
+                                    @if(!$search)
+                                        <a class="admin-btn" href="{{ route('admin.teachers.create') }}">Tambah Guru</a>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div class="admin-pagination">
+        <div class="admin-pagination" style="padding: var(--space-4);">
             {{ $teachers->links() }}
         </div>
-    </section>
+    </div>
 @endsection

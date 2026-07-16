@@ -68,28 +68,31 @@
                         <form method="POST" action="{{ route('admin.documentation-events.media.update', [$documentationEvent, $media]) }}" style="margin-bottom: 0.75rem;">
                             @csrf
                             @method('PATCH')
-                            <label for="caption-{{ $media->id }}" style="font-size: 0.8rem; font-weight: 600; color: var(--color-muted); display: block; margin-bottom: 0.3rem;">Caption</label>
-                            <div style="display: flex; gap: 0.4rem;">
-                                <input id="caption-{{ $media->id }}" class="admin-input" name="caption" value="{{ $media->caption }}" placeholder="Caption foto" style="font-size: 0.85rem; padding: 0.5rem 0.7rem;">
-                                <button class="admin-btn-soft" type="submit" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;">Simpan</button>
+                            <label for="caption-{{ $media->id }}" style="font-size: 0.8rem; font-weight: 600; color: var(--color-text); display: block; margin-bottom: 0.4rem;">Caption Mediak</label>
+                            <input id="caption-{{ $media->id }}" class="admin-input" name="caption" value="{{ $media->caption }}" placeholder="Tulis caption foto" style="font-size: 0.85rem; padding: 0.5rem 0.7rem; margin-bottom: 0.75rem;">
+                            
+                            <div class="admin-actions" style="gap: 0.4rem;">
+                                <button class="admin-btn-soft" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Simpan Caption</button>
+                                
+                                @if(!$media->is_featured)
+                                    <button form="feature-form-{{ $media->id }}" class="admin-btn-soft" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Jadikan Featured</button>
+                                @endif
+
+                                <button form="delete-form-{{ $media->id }}" class="admin-btn-danger" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Hapus</button>
                             </div>
                         </form>
 
-                        <div class="admin-actions" style="gap: 0.4rem;">
-                            @if(!$media->is_featured)
-                                <form method="POST" action="{{ route('admin.documentation-events.media.set-featured', [$documentationEvent, $media]) }}" style="display: inline;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="admin-btn-secondary" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Jadikan Featured</button>
-                                </form>
-                            @endif
-
-                            <form method="POST" action="{{ route('admin.documentation-events.media.destroy', [$documentationEvent, $media]) }}" style="display: inline;" onsubmit="return confirm('Hapus foto ini?');">
+                        @if(!$media->is_featured)
+                            <form id="feature-form-{{ $media->id }}" method="POST" action="{{ route('admin.documentation-events.media.set-featured', [$documentationEvent, $media]) }}" style="display: none;">
                                 @csrf
-                                @method('DELETE')
-                                <button class="admin-btn-danger" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Hapus</button>
+                                @method('PATCH')
                             </form>
-                        </div>
+                        @endif
+
+                        <form id="delete-form-{{ $media->id }}" method="POST" action="{{ route('admin.documentation-events.media.destroy', [$documentationEvent, $media]) }}" style="display: none;" onsubmit="return confirm('Hapus foto ini?');">
+                            @csrf
+                            @method('DELETE')
+                        </form>
                     </div>
                 </div>
             @endforeach

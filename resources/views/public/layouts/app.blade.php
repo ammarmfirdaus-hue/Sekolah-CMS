@@ -52,7 +52,7 @@
                             Profil
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ $homeUrl }}#profil">Profil</a></li>
+                            <li><a class="dropdown-item" href="{{ $homeUrl }}#profil">Profil Sekolah</a></li>
                             <li><a class="dropdown-item" href="{{ $homeUrl }}#visi-misi">Visi Misi</a></li>
                             <li><a class="dropdown-item" href="{{ $homeUrl }}#sejarah">Sejarah</a></li>
                             <li><a class="dropdown-item" href="{{ $homeUrl }}#struktur">Struktur Organisasi</a></li>

@@ -9,6 +9,7 @@ use App\Models\Teacher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class TeacherController extends Controller
@@ -41,7 +42,15 @@ class TeacherController extends Controller
 
     public function store(StoreTeacherRequest $request): RedirectResponse
     {
-        $teacher = Teacher::query()->create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('teachers', 'public');
+        } else {
+            unset($data['photo']);
+        }
+
+        $teacher = Teacher::query()->create($data);
 
         return redirect()
             ->route('admin.teachers.show', $teacher)
@@ -62,7 +71,21 @@ class TeacherController extends Controller
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher): RedirectResponse
     {
-        $teacher->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
+                Storage::disk('public')->delete($teacher->photo);
+            }
+
+            $data['photo'] = $request->file('photo')->store('teachers', 'public');
+        } else {
+            // Keep existing photo
+            unset($data['photo']);
+        }
+
+        $teacher->update($data);
 
         return redirect()
             ->route('admin.teachers.show', $teacher)
@@ -78,6 +101,11 @@ class TeacherController extends Controller
             if ($user) {
                 $teacher->update(['user_id' => null]);
                 $user->delete();
+            }
+
+            // Delete photo file
+            if ($teacher->photo && Storage::disk('public')->exists($teacher->photo)) {
+                Storage::disk('public')->delete($teacher->photo);
             }
 
             $teacher->delete();

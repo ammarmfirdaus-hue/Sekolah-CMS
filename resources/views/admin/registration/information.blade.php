@@ -11,9 +11,7 @@
         </div>
     </div>
 
-    @if (session('status'))
-        <div class="admin-alert">{{ session('status') }}</div>
-    @endif
+
 
     <section class="admin-card">
         <form action="{{ route('admin.registration.update') }}" method="POST">
@@ -23,14 +21,14 @@
                 <div class="admin-field">
                     <label for="is_open">Status Pendaftaran</label>
                     <select id="is_open" class="admin-select" name="is_open" required>
-                        <option value="1" @selected((string) old('is_open', $registrationInfo?->is_open ?? '') === '1')>Dibuka</option>
-                        <option value="0" @selected((string) old('is_open', $registrationInfo?->is_open ?? '') === '0')>Ditutup</option>
+                        <option value="1" @selected(old('is_open', $registrationInfo?->is_open ?? 1) == 1)>Dibuka</option>
+                        <option value="0" @selected(old('is_open', $registrationInfo?->is_open ?? 1) == 0)>Ditutup</option>
                     </select>
-                    @if ($registrationInfo?->is_open)
+                    <!-- @if ($registrationInfo?->is_open)
                         <span class="admin-badge" style="margin-top: 0.5rem; display: inline-block;">Pendaftaran Dibuka</span>
                     @else
                         <span class="admin-badge admin-badge-danger" style="margin-top: 0.5rem; display: inline-block;">Pendaftaran Ditutup</span>
-                    @endif
+                    @endif -->
                     @error('is_open') <div class="admin-error">{{ $message }}</div> @enderror
                 </div>
 

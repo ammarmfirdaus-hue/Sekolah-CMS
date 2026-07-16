@@ -60,16 +60,16 @@
                     @if ($registrationInfo?->contact_info)
                         <div style="background: var(--color-bg); border-radius: var(--radius-sm); padding: 1.5rem; margin-top: 1.5rem;">
                             <h3 style="color: var(--color-primary-dark); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;">Informasi Kontak</h3>
-                            <p style="margin: 0;">{{ $registrationInfo->contact_info }}</p>
+                            <p style="margin: 0;">{{ $registrationInfo->contact_info }}</p><br>081234567890
                         </div>
                     @endif
 
                     @if ($registrationInfo?->cta_text)
-                        <div class="contact-cta">
+                        <!-- <div class="contact-cta">
                             <h3>Butuh Informasi Lebih Lanjut?</h3>
                             <p>Hubungi kami untuk informasi lebih detail mengenai prosedur pendaftaran.</p>
-                            <a href="{{ $registrationInfo->cta_url ?: route('home').'#kontak' }}" class="btn btn-primary-custom">{{ $registrationInfo->cta_text }}</a>
-                        </div>
+                            <a href="{{ $registrationInfo->cta_url && !str_starts_with($registrationInfo->cta_url, '#') ? url($registrationInfo->cta_url) : route('home').($registrationInfo->cta_url ?: '#kontak') }}" class="btn btn-primary-custom">{{ $registrationInfo->cta_text }}</a>
+                        </div> -->
                     @endif
                 </div>
             </div>

@@ -9,7 +9,7 @@
 
     <div class="admin-field">
         <label for="position">Jabatan</label>
-        <input id="position" class="admin-input" name="position" value="{{ old('position', $organizationStructure->position ?? '') }}" required>
+        <input id="position" class="admin-input" name="position" value="{{ old('position', $organizationStructure->position ?? '') }}" readonly style="background-color: var(--color-surface-soft); cursor: not-allowed;" required>
         @error('position') <div class="admin-error">{{ $message }}</div> @enderror
     </div>
 

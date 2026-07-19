@@ -21,28 +21,6 @@ class OrganizationStructureController extends Controller
         return view('admin.organization-structures.index', compact('members'));
     }
 
-    public function create(): View
-    {
-        return view('admin.organization-structures.create');
-    }
-
-    public function store(StoreOrganizationStructureRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        $maxSortOrder = OrganizationStructure::query()->max('sort_order') ?? 0;
-        $data['sort_order'] = $maxSortOrder + 1;
-
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('organization-structures', 'public');
-        }
-
-        OrganizationStructure::query()->create($data);
-
-        return redirect()
-            ->route('admin.organization-structures.index')
-            ->with('status', 'Anggota struktur organisasi berhasil ditambahkan.');
-    }
 
     public function edit(OrganizationStructure $organizationStructure): View
     {
@@ -69,18 +47,5 @@ class OrganizationStructureController extends Controller
             ->with('status', 'Anggota struktur organisasi berhasil diperbarui.');
     }
 
-    public function destroy(OrganizationStructure $organizationStructure): RedirectResponse
-    {
-        $photo = $organizationStructure->photo;
 
-        $organizationStructure->delete();
-
-        if ($photo && Storage::disk('public')->exists($photo)) {
-            Storage::disk('public')->delete($photo);
-        }
-
-        return redirect()
-            ->route('admin.organization-structures.index')
-            ->with('status', 'Anggota struktur organisasi berhasil dihapus.');
-    }
 }

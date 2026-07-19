@@ -273,30 +273,63 @@ $mapsUrl = null;
             <p class="section-subtitle">Susunan kepengurusan {{ $schoolProfile?->school_name ?? 'PKBM Al Falah Sumur Batu' }}.</p>
         </div>
 
-        @if($organizationStructures->isNotEmpty())
-            <div class="structure-list">
-                @foreach($organizationStructures as $member)
-                    <article class="structure-card h-100">
-                        <div class="structure-card-body">
-                            @if($member->photo)
-                                <img src="{{ asset('storage/'.ltrim($member->photo, '/')) }}" alt="{{ $member->name }}" class="structure-photo">
-                            @else
-                                <div class="structure-photo-placeholder">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
-                            @endif
-                            <h3 class="structure-name">{{ $member->name }}</h3>
-                            <p class="structure-position">{{ $member->position }}</p>
-                            @if($member->description)
-                                <p class="structure-description">{{ $member->description }}</p>
-                            @endif
-                        </div>
-                    </article>
-                @endforeach
+        @php
+            $structTree = $organizationStructures->keyBy('position');
+            $pembina    = $structTree->get('Pembina');
+            $ketua      = $structTree->get('Ketua Yayasan');
+            $sekretaris = $structTree->get('Sekretaris');
+            $bendahara  = $structTree->get('Bendahara');
+            $ketuaPkbm  = $structTree->get('Ketua PKBM');
+            $kepsek     = $structTree->get('Kepala Sekolah SPS');
+        @endphp
+
+        <div class="org-hierarchy">
+            <!-- Level 1 -->
+            <div class="row justify-content-center org-level">
+                <div class="col-md-6 col-lg-4">
+                    @include('public.partials.org-card', ['member' => $pembina, 'defaultPosition' => 'Pembina'])
+                </div>
             </div>
-        @else
-            <div class="empty-state">
-                <p>Informasi struktur organisasi belum tersedia.</p>
+            
+            <!-- Connection Line -->
+            <div class="org-connector"></div>
+
+            <!-- Level 2 -->
+            <div class="row justify-content-center org-level">
+                <div class="col-md-6 col-lg-4">
+                    @include('public.partials.org-card', ['member' => $ketua, 'defaultPosition' => 'Ketua Yayasan'])
+                </div>
             </div>
-        @endif
+
+            <!-- Connection Line Fork -->
+            <div class="org-connector-fork"></div>
+
+            <!-- Level 3 -->
+            <div class="row justify-content-center org-level">
+                <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
+                    @include('public.partials.org-card', ['member' => $sekretaris, 'defaultPosition' => 'Sekretaris'])
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    @include('public.partials.org-card', ['member' => $bendahara, 'defaultPosition' => 'Bendahara'])
+                </div>
+            </div>
+
+            <!-- Connection Line Split For Level 4 -->
+            <div class="org-connector-split">
+                <div class="split-left"></div>
+                <div class="split-right"></div>
+            </div>
+
+            <!-- Level 4 -->
+            <div class="row justify-content-center org-level">
+                <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
+                    @include('public.partials.org-card', ['member' => $ketuaPkbm, 'defaultPosition' => 'Ketua PKBM'])
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    @include('public.partials.org-card', ['member' => $kepsek, 'defaultPosition' => 'Kepala Sekolah SPS'])
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -527,12 +560,17 @@ $mapsUrl = null;
     });
 </script>
 <style>
-.structure-list {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+.org-hierarchy {
+    position: relative;
+    padding-top: 1rem;
 }
 
+.org-level {
+    position: relative;
+    z-index: 2;
+}
+
+/* Base Card from existing design system */
 .structure-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -540,11 +578,19 @@ $mapsUrl = null;
     box-shadow: var(--shadow-sm);
     transition: transform 0.2s, box-shadow 0.2s;
     text-align: center;
+    position: relative;
 }
 
 .structure-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+}
+
+.structure-card.is-empty {
+    border-style: dashed;
+    border-color: var(--color-border-dark, #cbd5e1);
+    background: var(--color-surface-soft);
+    opacity: 0.8;
 }
 
 .structure-card-body {
@@ -595,19 +641,90 @@ $mapsUrl = null;
     margin: 0;
 }
 
-.section-structure .empty-state p {
-    color: var(--color-muted);
-    text-align: center;
-    padding: 2rem 0;
+/* Connectors Desktop only (hide on mobile to keep vertical stack clean) */
+@media (min-width: 768px) {
+    .org-connector {
+        height: 2rem;
+        width: 2px;
+        background-color: var(--color-primary-soft);
+        margin: 0 auto;
+    }
+
+    .org-connector-fork {
+        height: 2rem;
+        width: 2px;
+        background-color: var(--color-primary-soft);
+        margin: 0 auto;
+        position: relative;
+    }
+    .org-connector-fork::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: calc(-50vw / 3); /* Approximate span to connect next row */
+        width: calc(100vw / 3);
+        height: 2px;
+        background-color: var(--color-primary-soft);
+    }
+    @media (min-width: 992px) {
+        .org-connector-fork::before {
+            left: -150px;
+            width: 300px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .org-connector-fork::before {
+            left: -180px;
+            width: 360px;
+        }
+    }
+    
+    .org-connector-split {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+    }
+    .org-connector-split > div {
+        height: 2rem;
+        width: 2px;
+        background-color: var(--color-primary-soft);
+        position: relative;
+    }
+    
+    /* Center the drops for the 4 bottom elements */
+    /* Since we use col-md-6, they take 50% of row. The lines should align to the centers of the cards */
+    .org-connector-split {
+        height: 2rem;
+        position: relative;
+        width: 100%;
+    }
+    .split-left, .split-right {
+        position: absolute;
+        top: 0;
+        height: 2rem;
+        width: 2px;
+        background-color: var(--color-primary-soft);
+    }
+    .split-left { left: 25%; }
+    .split-right { left: 75%; }
 }
 
 @media (max-width: 767.98px) {
-    .structure-list {
-        grid-template-columns: 1fr;
-    }
-
     .structure-card-body {
         padding: 1.5rem 1rem;
+    }
+    .org-connector, .org-connector-fork, .org-connector-split {
+        /* On mobile, spacing is handled by bootstrap mb-4 classes, no horizontal branch lines needed */
+        height: 1.5rem;
+        width: 2px;
+        background-color: var(--color-primary-soft);
+        margin: 0 auto;
+        display: none;
+    }
+    
+    /* Alternatively, display simple vertical lines between mobile stack */
+    .org-connector {
+        display: block;
     }
 }
 </style>

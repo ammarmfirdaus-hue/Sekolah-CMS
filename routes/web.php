@@ -52,7 +52,7 @@ Route::prefix('admin')
             ->name('registration.update');
 
         Route::resource('organization-structures', OrganizationStructureController::class)
-            ->except(['show']);
+            ->only(['index', 'edit', 'update']);
 
         Route::resource('documentation-events', AdminDocumentationController::class)
             ->except(['show']);

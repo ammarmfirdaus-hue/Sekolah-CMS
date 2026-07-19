@@ -305,7 +305,7 @@ img {
 .section-kicker {
     color: var(--color-primary);
     display: inline-block;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     margin-bottom: 0.65rem;

@@ -27,7 +27,7 @@
                                 src="{{ asset('storage/'.$schoolProfile->logo) }}"
                                 alt="Logo saat ini"
                                 id="logo-preview-img">
-                            <span class="admin-upload-preview-label">Logo saat ini. Pilih file baru untuk mengganti.</span>
+                            <!-- <span class="admin-upload-preview-label">Logo saat ini. Pilih file baru untuk mengganti.</span> -->
                         </div>
                     @else
                         <div class="admin-upload-preview" id="logo-preview" style="display:none;">
@@ -52,7 +52,7 @@
                                 alt="Banner saat ini"
                                 id="banner-preview-img"
                                 style="max-height:100px; max-width:300px;">
-                            <span class="admin-upload-preview-label">Banner saat ini. Pilih file baru untuk mengganti.</span>
+                            <!-- <span class="admin-upload-preview-label">Banner saat ini. Pilih file baru untuk mengganti.</span> -->
                         </div>
                     @else
                         <div class="admin-upload-preview" id="banner-preview" style="display:none;">
@@ -126,7 +126,7 @@
                 <div class="admin-field admin-form-full">
                     <label for="maps_embed">Link Embed Google Maps</label>
                     <textarea id="maps_embed" class="admin-textarea" name="maps_embed">{{ old('maps_embed', $schoolProfile->maps_embed ?? '') }}</textarea>
-                    <span class="admin-help-text">Tempel kode embed dari Google Maps (format iframe). Kosongkan jika tidak digunakan.</span>
+                    <!-- <span class="admin-help-text">Tempel kode embed dari Google Maps (format iframe). Kosongkan jika tidak digunakan.</span> -->
                     @error('maps_embed') <div class="admin-error">{{ $message }}</div> @enderror
                 </div>
 

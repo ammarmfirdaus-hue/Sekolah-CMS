@@ -269,10 +269,10 @@ img {
 }
 
 .admin-nav-toggle.active {
-  background: rgba(255, 255, 255, 0.14);
-  border-left-color: var(--color-accent);
+  background: transparent;
+  border-left-color: transparent;
   color: #fff;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Chevron */

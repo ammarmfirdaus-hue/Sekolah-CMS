@@ -7,9 +7,8 @@
         <div>
             <span class="admin-kicker">Profil Sekolah</span>
             <h1 class="admin-title">Struktur Organisasi</h1>
-            <p class="admin-subtitle">Kelola anggota struktur organisasi yang ditampilkan di halaman profil.</p>
+            <p class="admin-subtitle">Kelola anggota struktur organisasi.</p>
         </div>
-        <a class="admin-btn" href="{{ route('admin.organization-structures.create') }}">Tambah Anggota</a>
     </div>
 
     <div class="admin-table-card">
@@ -53,13 +52,9 @@
                             <td>{{ $member->created_at->locale('id')->translatedFormat('d M Y') }}</td>
                             <td>
                                 <div class="admin-actions">
-                                    <a class="admin-btn-soft" href="{{ route('admin.organization-structures.edit', $member) }}">Edit</a>
-                                    <form method="POST" action="{{ route('admin.organization-structures.destroy', $member) }}"
-                                        onsubmit="return confirm('Hapus anggota ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="admin-btn-danger" type="submit">Hapus</button>
-                                    </form>
+                                    <a class="admin-btn-soft" href="{{ route('admin.organization-structures.edit', $member) }}">
+                                        {{ $member->name ? 'Edit Data' : 'Isi Data' }}
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -67,8 +62,7 @@
                         <tr>
                             <td colspan="5">
                                 <div class="admin-empty">
-                                    <p>Belum ada anggota struktur organisasi.</p>
-                                    <a class="admin-btn" href="{{ route('admin.organization-structures.create') }}">Tambah Anggota</a>
+                                    <p>Struktur organisasi belum diinisialisasi.</p>
                                 </div>
                             </td>
                         </tr>

@@ -12,8 +12,8 @@
     </div>
 
     <section class="admin-card">
-        <form method="POST" action="{{ route('admin.documentation-events.store') }}">
-            @include('admin.documentation.partials.form', ['submitLabel' => 'Simpan Dokumentasi'])
+        <form method="POST" action="{{ route('admin.documentation-events.store') }}" enctype="multipart/form-data">
+            @include('admin.documentation.partials.form', ['submitLabel' => 'Simpan Dokumentasi & Foto'])
         </form>
     </section>
 @endsection

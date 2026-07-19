@@ -57,12 +57,7 @@ Route::prefix('admin')
         Route::resource('documentation-events', AdminDocumentationController::class)
             ->except(['show']);
 
-        Route::post('documentation-events/{documentationEvent}/media', [AdminDocumentationMediaController::class, 'store'])
-            ->name('documentation-events.media.store');
-        Route::patch('documentation-events/{documentationEvent}/media/{media}', [AdminDocumentationMediaController::class, 'update'])
-            ->name('documentation-events.media.update');
-        Route::patch('documentation-events/{documentationEvent}/media/{media}/featured', [AdminDocumentationMediaController::class, 'setFeatured'])
-            ->name('documentation-events.media.set-featured');
+
         Route::delete('documentation-events/{documentationEvent}/media/{media}', [AdminDocumentationMediaController::class, 'destroy'])
             ->name('documentation-events.media.destroy');
 

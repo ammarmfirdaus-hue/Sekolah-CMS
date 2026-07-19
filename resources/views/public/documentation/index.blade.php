@@ -49,7 +49,7 @@
                         <article class="event-card">
                             <div class="row g-0">
                                 @php
-                                $featuredMedia = $event->media->where('is_featured', true)->first() ?? $event->media->first();
+                                $featuredMedia = $event->media->first();
                                 @endphp
 
                                 @if($featuredMedia && $featuredMedia->isPhoto())

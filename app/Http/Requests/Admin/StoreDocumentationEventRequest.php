@@ -22,6 +22,9 @@ class StoreDocumentationEventRequest extends FormRequest
             'location' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'is_published' => ['required', 'boolean'],
+            'photos' => ['nullable', 'array', 'max:20'],
+            'photos.*' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:5120', 'dimensions:min_width=600,min_height=400'],
+            'general_caption' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

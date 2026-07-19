@@ -11,92 +11,59 @@
         </div>
     </div>
 
-    <section class="admin-card">
-        <form method="POST" action="{{ route('admin.documentation-events.update', $documentationEvent) }}">
-            @method('PUT')
-            @include('admin.documentation.partials.form', ['submitLabel' => 'Simpan Perubahan'])
-        </form>
-    </section>
-
-    <section class="admin-card" style="margin-top: 1.5rem;">
-        <h2 class="admin-section-title" style="margin-bottom: 1rem;">Upload Foto Dokumentasi</h2>
-        <form method="POST" action="{{ route('admin.documentation-events.media.store', $documentationEvent) }}" enctype="multipart/form-data">
-            @csrf
-            <div class="admin-field">
-                <label for="photos">Pilih Foto (maksimal 10 file)</label>
-                <input id="photos" class="admin-input" type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/jpg,image/webp" required>
-                <small style="display: block; margin-top: 0.3rem; color: var(--color-muted);">Format: JPEG, PNG, WEBP. Maksimal 4MB per file.</small>
-                @error('photos') <div class="admin-error">{{ $message }}</div> @enderror
-                @error('photos.*') <div class="admin-error">{{ $message }}</div> @enderror
-            </div>
-
-            <div class="admin-field" style="margin-top: 1rem;">
-                <label for="caption">Caption (opsional, digunakan untuk semua foto yang diupload)</label>
-                <input id="caption" class="admin-input" name="caption" value="{{ old('caption') }}" placeholder="Contoh: Kegiatan belajar outdoor">
-                @error('caption') <div class="admin-error">{{ $message }}</div> @enderror
-            </div>
-
-            <div style="margin-top: 1rem;">
-                <button class="admin-btn" type="submit">Upload Foto</button>
-            </div>
-        </form>
-    </section>
-
-    @if($documentationEvent->media->isNotEmpty())
-    <section class="admin-card" style="margin-top: 1.5rem;">
-        <h2 class="admin-section-title" style="margin-bottom: 1rem;">Gallery Media ({{ $documentationEvent->media->count() }} foto)</h2>
+    <form id="main-update-form" method="POST" action="{{ route('admin.documentation-events.update', $documentationEvent) }}" enctype="multipart/form-data">
+        @method('PUT')
         
-        <div class="admin-media-grid">
-            @foreach($documentationEvent->media as $media)
-                <div class="admin-media-card">
-                    <div class="admin-media-image-wrapper">
-                        @if($media->path)
-                            <img src="{{ $media->publicUrl() }}" alt="{{ $media->caption ?: $documentationEvent->title }}" class="admin-media-image">
-                        @else
-                            <div class="admin-media-placeholder">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="48" height="48">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
-                        @endif
-                        @if($media->is_featured)
-                            <span class="admin-media-featured-badge">Featured</span>
-                        @endif
-                    </div>
+        <section class="admin-card">
+            @include('admin.documentation.partials.form', ['submitLabel' => 'Simpan Seluruh Perubahan'])
+        </section>
 
-                    <div class="admin-media-body">
-                        <form method="POST" action="{{ route('admin.documentation-events.media.update', [$documentationEvent, $media]) }}" style="margin-bottom: 0.75rem;">
-                            @csrf
-                            @method('PATCH')
-                            <label for="caption-{{ $media->id }}" style="font-size: 0.8rem; font-weight: 600; color: var(--color-text); display: block; margin-bottom: 0.4rem;">Caption Mediak</label>
-                            <input id="caption-{{ $media->id }}" class="admin-input" name="caption" value="{{ $media->caption }}" placeholder="Tulis caption foto" style="font-size: 0.85rem; padding: 0.5rem 0.7rem; margin-bottom: 0.75rem;">
+        @if($documentationEvent->media->isNotEmpty())
+        <section class="admin-card" style="margin-top: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 class="admin-section-title" style="margin: 0;">Gallery Media ({{ $documentationEvent->media->count() }} foto)</h2>
+                <div style="font-size: 0.9rem; color: var(--color-muted);">Foto yang tampil pertama otomatis akan menjadi Cover acara.</div>
+            </div>
+            
+            <div class="admin-media-grid">
+                @foreach($documentationEvent->media as $media)
+                    <div class="admin-media-card" style="display: flex; flex-direction: column;">
+                        <div class="admin-media-image-wrapper">
+                            @if($media->path)
+                                <img src="{{ $media->publicUrl() }}" alt="{{ $media->caption ?: $documentationEvent->title }}" class="admin-media-image" style="object-fit: cover;">
+                            @else
+                                <div class="admin-media-placeholder">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="48" height="48">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="admin-media-body" style="padding: 1rem; background: var(--color-surface); flex: 1; border-top: 1px solid var(--color-border); display: flex; flex-direction: column;">
+                            <label for="caption-{{ $media->id }}" style="font-size: 0.8rem; font-weight: 600; color: var(--color-text); display: block; margin-bottom: 0.4rem;">Caption Spesifik</label>
                             
-                            <div class="admin-actions" style="gap: 0.4rem;">
-                                <button class="admin-btn-soft" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Simpan Caption</button>
-                                
-                                @if(!$media->is_featured)
-                                    <button form="feature-form-{{ $media->id }}" class="admin-btn-soft" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Jadikan Featured</button>
-                                @endif
-
-                                <button form="delete-form-{{ $media->id }}" class="admin-btn-danger" type="submit" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;">Hapus</button>
+                            <!-- This input is naturally submitted by the master form wrapping everything -->
+                            <input id="caption-{{ $media->id }}" class="admin-input" name="captions[{{ $media->id }}]" value="{{ $media->caption }}" placeholder="Kosongkan jika tidak perlu caption khusus" style="font-size: 0.85rem; padding: 0.5rem 0.7rem; margin-bottom: auto;">
+                            
+                            <div class="admin-actions" style="margin-top: 1rem; justify-content: flex-end;">
+                                <button type="button" form="delete-form-{{ $media->id }}" class="admin-btn-danger" style="padding: 0.45rem 0.75rem; font-size: 0.8rem;" onclick="if(confirm('Hapus foto ini secara permanen?')) document.getElementById('delete-form-{{ $media->id }}').submit();">Hapus Foto</button>
                             </div>
-                        </form>
-
-                        @if(!$media->is_featured)
-                            <form id="feature-form-{{ $media->id }}" method="POST" action="{{ route('admin.documentation-events.media.set-featured', [$documentationEvent, $media]) }}" style="display: none;">
-                                @csrf
-                                @method('PATCH')
-                            </form>
-                        @endif
-
-                        <form id="delete-form-{{ $media->id }}" method="POST" action="{{ route('admin.documentation-events.media.destroy', [$documentationEvent, $media]) }}" style="display: none;" onsubmit="return confirm('Hapus foto ini?');">
-                            @csrf
-                            @method('DELETE')
-                        </form>
+                        </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
-    </section>
+                @endforeach
+            </div>
+        </section>
+        @endif
+    </form>
+
+    <!-- Hidden Delete Forms -->
+    @if($documentationEvent->media->isNotEmpty())
+        @foreach($documentationEvent->media as $media)
+            <form id="delete-form-{{ $media->id }}" method="POST" action="{{ route('admin.documentation-events.media.destroy', [$documentationEvent, $media]) }}" style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endforeach
     @endif
 @endsection

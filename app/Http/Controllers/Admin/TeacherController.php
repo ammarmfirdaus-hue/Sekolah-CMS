@@ -9,6 +9,7 @@ use App\Models\Teacher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class TeacherController extends Controller
@@ -41,7 +42,13 @@ class TeacherController extends Controller
 
     public function store(StoreTeacherRequest $request): RedirectResponse
     {
-        $teacher = Teacher::query()->create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('teachers', 'public');
+        }
+
+        $teacher = Teacher::query()->create($data);
 
         return redirect()
             ->route('admin.teachers.show', $teacher)
@@ -62,7 +69,18 @@ class TeacherController extends Controller
 
     public function update(UpdateTeacherRequest $request, Teacher $teacher): RedirectResponse
     {
-        $teacher->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('photo')) {
+            $oldPhoto = $teacher->photo;
+            $data['photo'] = $request->file('photo')->store('teachers', 'public');
+
+            if ($oldPhoto && Storage::disk('public')->exists($oldPhoto)) {
+                Storage::disk('public')->delete($oldPhoto);
+            }
+        }
+
+        $teacher->update($data);
 
         return redirect()
             ->route('admin.teachers.show', $teacher)
@@ -71,6 +89,8 @@ class TeacherController extends Controller
 
     public function destroy(Teacher $teacher): RedirectResponse
     {
+        $photo = $teacher->photo;
+
         DB::transaction(function () use ($teacher): void {
             $teacher->load('user');
             $user = $teacher->user;
@@ -82,6 +102,10 @@ class TeacherController extends Controller
 
             $teacher->delete();
         });
+
+        if ($photo && Storage::disk('public')->exists($photo)) {
+            Storage::disk('public')->delete($photo);
+        }
 
         return redirect()
             ->route('admin.teachers.index')

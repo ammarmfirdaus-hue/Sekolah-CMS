@@ -12,7 +12,7 @@
     </div>
 
     <section class="admin-card">
-        <form method="POST" action="{{ route('admin.teachers.store') }}">
+        <form method="POST" action="{{ route('admin.teachers.store') }}" enctype="multipart/form-data">
             @include('admin.teachers.partials.form', ['submitLabel' => 'Simpan Guru'])
         </form>
     </section>

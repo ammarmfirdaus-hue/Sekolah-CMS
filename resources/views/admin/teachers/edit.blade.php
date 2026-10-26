@@ -12,7 +12,7 @@
     </div>
 
     <section class="admin-card">
-        <form method="POST" action="{{ route('admin.teachers.update', $teacher) }}">
+        <form method="POST" action="{{ route('admin.teachers.update', $teacher) }}" enctype="multipart/form-data">
             @method('PUT')
             @include('admin.teachers.partials.form', ['submitLabel' => 'Simpan Perubahan'])
         </form>

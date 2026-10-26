@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContentSection;
+use App\Models\OrganizationStructure;
 use App\Models\Program;
 use App\Models\SchoolProfile;
 use App\Models\Teacher;
@@ -37,11 +38,17 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
+        $organizationStructures = OrganizationStructure::query()
+            ->active()
+            ->ordered()
+            ->get();
+
         return view('public.home', compact(
             'schoolProfile',
             'sections',
             'programs',
-            'teachers'
+            'teachers',
+            'organizationStructures'
         ));
     }
 }

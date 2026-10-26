@@ -75,7 +75,8 @@
 - Controllers use `View`/`RedirectResponse` return type hints.
 - No `@vite` directive in views yet — asset serving is CDN + `asset()`.
 - Requests: `StoreTeacherRequest`, `UpdateTeacherRequest`, `LoginRequest` in `app/Http/Requests/`.
-- No tests written (empty `tests/Feature/`, `tests/Unit/`).
+- Feature tests for auth, admin, and public routes exist in `tests/Feature`.
+- No unit tests have been written (`tests/Unit` is empty).
 
 ## Gotchas
 
@@ -84,3 +85,14 @@
 - Teacher `show` route uses route-model binding by slug, not ID.
 - Image upload not yet implemented (no media handling in controllers).
 - Public home loads only 6 teachers (`limit(6)`).
+NEVER run:
+
+- php artisan migrate:fresh
+- php artisan migrate:fresh --seed
+- php artisan db:wipe
+- php artisan schema:dump --prune
+without explicit user permission.
+When adding a new migration, only run:
+php artisan migrate
+When adding a new seeder, only seed the specific seeder if requested.
+Assume this project contains user-generated CMS data that must never be destroyed.

@@ -35,7 +35,7 @@
                     <aside class="teacher-profile-card">
                         @if ($teacher->photo)
                             <img class="teacher-detail-photo" src="{{ asset('storage/'.ltrim($teacher->photo, '/')) }}" alt="Foto {{ $teacher->name }}">
-                        @else
+                        @elseif ($teacher->name)
                             <div class="teacher-detail-avatar" aria-hidden="true">{{ $initials ?: 'GR' }}</div>
                         @endif
 
@@ -50,7 +50,7 @@
                             <div>
                                 <dt>Email</dt>
                                 <dd>
-                                    @if ($teacher->email)
+                                    @if (filled($teacher->email))
                                         <a href="mailto:{{ $teacher->email }}">{{ $teacher->email }}</a>
                                     @else
                                         Belum tersedia
@@ -60,7 +60,7 @@
                             <div>
                                 <dt>Telepon</dt>
                                 <dd>
-                                    @if ($teacher->phone)
+                                    @if (filled($teacher->phone))
                                         <a href="tel:{{ $phoneDigits }}">{{ $teacher->phone }}</a>
                                     @else
                                         Belum tersedia
